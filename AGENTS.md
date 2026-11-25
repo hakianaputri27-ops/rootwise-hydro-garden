@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project architecture
+- Keep application content bundled and core features independent of network services; use browser storage for progress and IndexedDB for garden records so the app remains useful offline without accounts.
