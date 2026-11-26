@@ -4,3 +4,4 @@
 - [ ] Add bundled beginner lessons, crop guides, DIY projects, and working calculators.
 - [ ] Persist learning/settings locally and garden/journal data in IndexedDB; support JSON backup and restore.
 - [ ] Add installable offline PWA support and validate core screens, calculations, and mobile layout.
+- [ ] Finish the unfinished screens, repair route/build errors, and verify the app end to end.
