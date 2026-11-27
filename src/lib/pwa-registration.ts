@@ -13,7 +13,7 @@ function mustRefuseServiceWorker(hostname: string, inFrame: boolean) {
   const hostedPreview = isLovablePreviewHost(lowerHost);
   const lovableProject = lowerHost === "lovableproject.com" || lowerHost.endsWith(".lovableproject.com") || lowerHost === "lovableproject-dev.com" || lowerHost.endsWith(".lovableproject-dev.com");
   const beta = lowerHost === "beta.lovable.dev" || lowerHost.endsWith(".beta.lovable.dev");
-  return !import.meta.env.PROD || inFrame || hostedPreview || devProject || lovableProject || beta || window.location.search.includes("sw=off");
+  return !import.meta.env.PROD || inFrame || hostedPreview || devProject || lovableProject || beta || new URLSearchParams(window.location.search).get("sw") === "off";
 }
 
 async function removeAppServiceWorker() {
@@ -32,7 +32,7 @@ export function registerAppServiceWorker() {
   const hostname = window.location.hostname.toLowerCase();
   const inFrame = window.self !== window.top;
   if (mustRefuseServiceWorker(hostname, inFrame)) {
-    void removeAppServiceWorker();
+    void removeAppServiceWorker().catch(() => undefined);
     return;
   }
   void navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => undefined);

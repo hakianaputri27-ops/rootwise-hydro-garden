@@ -1,0 +1,14 @@
+{
+  "name": "Grow School | Hydroponics Learning App",
+  "short_name": "Grow School",
+  "description": "Learn hydroponics. Grow your own food.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F7F8F1",
+  "theme_color": "#246B45",
+  "icons": [
+    { "src": "/icons/grow-school-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/grow-school-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

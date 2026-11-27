@@ -6,6 +6,7 @@ export type AppSettings = {
   completedLessonIds: string[];
   completedDiyIds: string[];
   diyChecklists: Record<string, number[]>;
+  diyCosts?: Record<string, number>;
 };
 
 export const defaultSettings: AppSettings = {
@@ -16,6 +17,7 @@ export const defaultSettings: AppSettings = {
   completedLessonIds: [],
   completedDiyIds: [],
   diyChecklists: {},
+  diyCosts: {},
 };
 
 const SETTINGS_KEY = "grow-school-settings-v1";
@@ -32,6 +34,9 @@ export function readSettings(): AppSettings {
       completedLessonIds: Array.isArray(value.completedLessonIds) ? value.completedLessonIds.filter((id): id is string => typeof id === "string") : [],
       completedDiyIds: Array.isArray(value.completedDiyIds) ? value.completedDiyIds.filter((id): id is string => typeof id === "string") : [],
       diyChecklists: typeof value.diyChecklists === "object" && value.diyChecklists !== null ? value.diyChecklists : {},
+      diyCosts: typeof value.diyCosts === "object" && value.diyCosts !== null
+        ? Object.fromEntries(Object.entries(value.diyCosts).filter((entry): entry is [string, number] => typeof entry[1] === "number" && Number.isFinite(entry[1]) && entry[1] >= 0))
+        : {},
       units: value.units === "imperial" ? "imperial" : "metric",
       currency: value.currency === "USD" || value.currency === "EUR" ? value.currency : "IDR",
       displayName: typeof value.displayName === "string" ? value.displayName : "",

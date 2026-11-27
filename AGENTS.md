@@ -31,3 +31,4 @@ use the editor.
 
 ## Project architecture
 - Keep application content bundled and core features independent of network services; use browser storage for progress and IndexedDB for garden records so the app remains useful offline without accounts.
+- Keep each primary navigation screen as its own TanStack file route and share only app-wide presentation helpers, so tabs stay type-safe and independently searchable.

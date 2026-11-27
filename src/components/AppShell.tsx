@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BookOpen, Calculator, House, Leaf, Sprout, UserRound } from "lucide-react";
+import { BookOpen, Calculator, HardDrive, House, Leaf, Sprout, UserRound } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const navigation: { to: "/" | "/learn" | "/tools" | "/garden" | "/profile"; label: string; icon: LucideIcon }[] = [
@@ -12,19 +12,21 @@ const navigation: { to: "/" | "/learn" | "/tools" | "/garden" | "/profile"; labe
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-background pb-28 text-foreground">
+    <div className="min-h-screen bg-background pb-24 text-foreground">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-8">
         <Link to="/" className="flex min-w-0 items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-label="Grow School home">
-          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground"><Leaf className="size-5" aria-hidden="true" /></span>
+          <span className="grid size-10 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground">
+            <Leaf className="size-5" aria-hidden="true" />
+          </span>
           <span className="min-w-0">
             <span className="block font-display text-lg leading-tight">Grow School</span>
-            <span className="block text-xs text-muted-foreground">Learn hydroponics. Grow your own food.</span>
+            <span className="hidden text-xs text-muted-foreground sm:block">Learn Hydroponics. Grow Your Own Food.</span>
           </span>
         </Link>
-        <div className="hidden items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground sm:flex">
-          <span className="size-2 rounded-full bg-secondary" aria-hidden="true" />
-          Works offline
-        </div>
+        <span className="hidden items-center gap-2 text-xs font-medium text-muted-foreground sm:flex">
+          <HardDrive className="size-4" aria-hidden="true" />
+          Saved on this device
+        </span>
       </header>
       <main className="mx-auto w-full max-w-7xl px-4 pb-8 sm:px-8">{children}</main>
       <nav aria-label="Main navigation" className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] pt-2 backdrop-blur-md">
