@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GardenRouteImport } from './routes/garden'
-import { Route as LearnRouteImport } from './routes/learn'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ToolsRouteImport } from './routes/tools'
 
@@ -23,11 +22,6 @@ const IndexRoute = IndexRouteImport.update({
 const GardenRoute = GardenRouteImport.update({
   id: '/garden',
   path: '/garden',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LearnRoute = LearnRouteImport.update({
-  id: '/learn',
-  path: '/learn',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -44,14 +38,12 @@ const ToolsRoute = ToolsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/garden': typeof GardenRoute
-  '/learn': typeof LearnRoute
   '/profile': typeof ProfileRoute
   '/tools': typeof ToolsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/garden': typeof GardenRoute
-  '/learn': typeof LearnRoute
   '/profile': typeof ProfileRoute
   '/tools': typeof ToolsRoute
 }
@@ -59,22 +51,20 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/garden': typeof GardenRoute
-  '/learn': typeof LearnRoute
   '/profile': typeof ProfileRoute
   '/tools': typeof ToolsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/garden' | '/learn' | '/profile' | '/tools'
+  fullPaths: '/' | '/garden' | '/profile' | '/tools'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/garden' | '/learn' | '/profile' | '/tools'
-  id: '__root__' | '/' | '/garden' | '/learn' | '/profile' | '/tools'
+  to: '/' | '/garden' | '/profile' | '/tools'
+  id: '__root__' | '/' | '/garden' | '/profile' | '/tools'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GardenRoute: typeof GardenRoute
-  LearnRoute: typeof LearnRoute
   ProfileRoute: typeof ProfileRoute
   ToolsRoute: typeof ToolsRoute
 }
@@ -93,13 +83,6 @@ declare module '@tanstack/react-router' {
       path: '/garden'
       fullPath: '/garden'
       preLoaderRoute: typeof GardenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/learn': {
-      id: '/learn'
-      path: '/learn'
-      fullPath: '/learn'
-      preLoaderRoute: typeof LearnRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -122,7 +105,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GardenRoute: GardenRoute,
-  LearnRoute: LearnRoute,
   ProfileRoute: ProfileRoute,
   ToolsRoute: ToolsRoute,
 }

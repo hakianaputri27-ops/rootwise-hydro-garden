@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { calculateNutrientMix, ecToPpm, estimatePlantCapacity, ppmToEc } from "@/lib/calculators";
+import { calculateNutrientMix, ecToPpm, estimateHarvest, estimatePlantCapacity, ppmToEc } from "@/lib/calculators";
 import { formatLength } from "@/lib/formatters";
 
 describe("hydroponics calculations", () => {
@@ -16,6 +16,18 @@ describe("hydroponics calculations", () => {
 
   it("estimates plant capacity from crop spacing", () => {
     expect(estimatePlantCapacity(1, 0.6, 20)).toBe(15);
+    expect(estimatePlantCapacity(1, 0.6, 0)).toBe(0);
+    expect(estimatePlantCapacity(1, 0.6, Number.NaN)).toBe(0);
+  });
+
+  it("calculates a crop timeline using calendar days", () => {
+    expect(estimateHarvest("2026-03-01", 35, new Date("2026-03-15T00:00:00Z"))).toEqual({
+      harvestDate: "2026-04-05",
+      daysRemaining: 21,
+      daysElapsed: 14,
+      progressPercent: 40,
+    });
+    expect(estimateHarvest("2026-02-30", 35, new Date("2026-03-15T00:00:00Z"))).toBeNull();
   });
 
   it("uses the selected unit preference for garden distances", () => {

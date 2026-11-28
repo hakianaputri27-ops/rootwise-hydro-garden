@@ -35,5 +35,13 @@ export function registerAppServiceWorker() {
     void removeAppServiceWorker().catch(() => undefined);
     return;
   }
-  void navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => undefined);
+  void navigator.serviceWorker.register("/sw.js", { scope: "/" }).then(async (registration) => {
+    try {
+      const cache = await caches.open(`workbox-runtime-${registration.scope}`);
+      const cachedPage = await cache.match(window.location.pathname);
+      if (!cachedPage) await cache.add(window.location.pathname);
+    } catch {
+      // Offline caching is best-effort; the app remains usable online if storage is unavailable.
+    }
+  }).catch(() => undefined);
 }

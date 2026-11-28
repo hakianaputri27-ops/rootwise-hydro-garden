@@ -13,6 +13,7 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   vite: {
     plugins: [VitePWA({
+      outDir: "dist/client",
       strategies: "generateSW",
       filename: "sw.js",
       registerType: "autoUpdate",
@@ -34,12 +35,13 @@ export default defineConfig({
         ],
       },
       workbox: {
+        navigateFallback: null,
         navigateFallbackDenylist: [/^\/~oauth(?:\/|$)/],
         runtimeCaching: [
           {
             urlPattern: ({ request, url }) => request.mode === "navigate" && !url.pathname.startsWith("/~oauth"),
             handler: "NetworkFirst",
-            options: { cacheName: "grow-school-pages", networkTimeoutSeconds: 3, expiration: { maxEntries: 25, maxAgeSeconds: 2592000 } },
+            options: { networkTimeoutSeconds: 3 },
           },
           {
             urlPattern: ({ request, url }) => url.origin === self.location.origin && request.destination !== "document" && /\/assets\/[^/]+-[A-Za-z0-9_-]{8,}\.(?:js|css|woff2?)$/.test(url.pathname),

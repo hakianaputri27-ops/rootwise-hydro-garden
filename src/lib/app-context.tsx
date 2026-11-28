@@ -52,8 +52,21 @@ function isGardenSnapshot(value: unknown): value is GardenSnapshot {
   if (typeof value !== "object" || value === null) return false;
   const snapshot = value as Partial<GardenSnapshot>;
   return Array.isArray(snapshot.projects) && Array.isArray(snapshot.entries) &&
-    snapshot.projects.every((project) => typeof project === "object" && project !== null && typeof project.id === "string" && typeof project.name === "string" && typeof project.plant === "string" && typeof project.plantedAt === "string" && typeof project.stage === "number") &&
-    snapshot.entries.every((entry) => typeof entry === "object" && entry !== null && typeof entry.id === "string" && typeof entry.projectId === "string" && typeof entry.date === "string");
+    snapshot.projects.every((project) => typeof project === "object" && project !== null &&
+      typeof project.id === "string" && typeof project.name === "string" && typeof project.plant === "string" &&
+      typeof project.system === "string" && typeof project.plantedAt === "string" &&
+      typeof project.plantCount === "number" && Number.isFinite(project.plantCount) && project.plantCount >= 1 &&
+      typeof project.durationDays === "number" && Number.isFinite(project.durationDays) && project.durationDays >= 1 &&
+      typeof project.notes === "string" && typeof project.stage === "number" &&
+      Number.isInteger(project.stage) && project.stage >= 0 && project.stage < 5) &&
+    snapshot.entries.every((entry) => typeof entry === "object" && entry !== null &&
+      typeof entry.id === "string" && typeof entry.projectId === "string" && typeof entry.date === "string" &&
+      (entry.heightCm === null || (typeof entry.heightCm === "number" && Number.isFinite(entry.heightCm) && entry.heightCm >= 0)) &&
+      typeof entry.waterChanged === "boolean" &&
+      (entry.ph === null || (typeof entry.ph === "number" && Number.isFinite(entry.ph) && entry.ph >= 0 && entry.ph <= 14)) &&
+      (entry.ec === null || (typeof entry.ec === "number" && Number.isFinite(entry.ec) && entry.ec >= 0)) &&
+      typeof entry.observations === "string" &&
+      (entry.photoDataUrl === null || (typeof entry.photoDataUrl === "string" && entry.photoDataUrl.startsWith("data:image/"))));
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {

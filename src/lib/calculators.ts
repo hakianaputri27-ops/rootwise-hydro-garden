@@ -20,13 +20,18 @@ export function ppmToEc(ppm: number, scale: PpmScale) {
 }
 
 export function estimateHarvest(plantingDate: string, durationDays: number, today = new Date()) {
-  const planted = new Date(`${plantingDate}T12:00:00`);
-  if (!plantingDate || Number.isNaN(planted.getTime())) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(plantingDate)) return null;
+  const [year, month, day] = plantingDate.split("-").map(Number);
+  if (year === undefined || month === undefined || day === undefined) return null;
+  const plantedAt = Date.UTC(year, month - 1, day);
+  const validatedDate = new Date(plantedAt);
+  if (validatedDate.getUTCFullYear() !== year || validatedDate.getUTCMonth() !== month - 1 || validatedDate.getUTCDate() !== day) return null;
   const duration = Math.max(1, Math.floor(nonNegative(durationDays)));
-  const harvest = new Date(planted);
-  harvest.setDate(harvest.getDate() + duration);
-  const daysElapsed = Math.max(0, Math.floor((today.getTime() - planted.getTime()) / 86_400_000));
-  const daysRemaining = Math.ceil((harvest.getTime() - today.getTime()) / 86_400_000);
+  const todayAt = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  const harvestAt = plantedAt + duration * 86_400_000;
+  const harvest = new Date(harvestAt);
+  const daysElapsed = Math.max(0, Math.floor((todayAt - plantedAt) / 86_400_000));
+  const daysRemaining = Math.ceil((harvestAt - todayAt) / 86_400_000);
   return {
     harvestDate: harvest.toISOString().slice(0, 10),
     daysRemaining,
@@ -36,7 +41,7 @@ export function estimateHarvest(plantingDate: string, durationDays: number, toda
 }
 
 export function estimatePlantCapacity(lengthMeters: number, widthMeters: number, spacingCm: number) {
-  if (spacingCm <= 0) return 0;
+  if (!Number.isFinite(spacingCm) || spacingCm <= 0) return 0;
   const plantsAlongLength = Math.floor((nonNegative(lengthMeters) * 100) / spacingCm);
   const plantsAlongWidth = Math.floor((nonNegative(widthMeters) * 100) / spacingCm);
   return plantsAlongLength * plantsAlongWidth;
